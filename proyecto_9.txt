@@ -1,0 +1,44 @@
+procedure ListarVehiculo(tipovehiculo varchar2,vehiculos out estructura_tmp) is
+    
+    begin
+        if UPPER(tipoVehiculo)='COCHE' then
+            for i in (select v.matricula,v.preciodia,v.marca,v.descripcion,v.color,v.motor,v.cilindrada,v.fechaadq,v.estado,v.carnet,c.numplazas,c.numpuertas 
+                      from vehiculo v inner join coche c 
+                      on c.matricula=v.matricula)
+            loop
+                insert into tmp_estructura (c1,c2,n1,c3,c4,c5,c6,n2,d1,c7,c8,n3,n4) 
+                values(UPPER(tipoVehiculo),i.matricula,i.preciodia,i.marca,i.descripcion,i.color,i.motor,i.cilindrada,i.fechaadq,i.estado,i.carnet,i.numplazas,i.numpuertas);
+            end loop;
+            open vehiculos for select * from tmp_estructura;
+        elsif UPPER(tipoVehiculo)='CAMION' then     
+            for i in (select v.matricula,v.preciodia,v.marca,v.descripcion,v.color,v.motor,v.cilindrada,v.fechaadq,v.estado,v.carnet,c.numruedas,c.mma 
+                      from vehiculo v inner join camion c 
+                      on c.matricula=v.matricula)
+            loop
+                insert into tmp_estructura (c1,c2,n1,c3,c4,c5,c6,n2,d1,c7,c8,n3,n4) 
+                values ('COCHE',i.matricula,i.preciodia,i.marca,i.descripcion,i.color,i.motor,i.cilindrada,i.fechaadq,i.estado,i.carnet,i.numruedas,i.mma);
+            end loop;
+            open vehiculos for select * from tmp_estructura;
+       elsif UPPER(tipoVehiculo)='FURGONETA' then
+             for i in (select v.matricula,v.preciodia,v.marca,v.descripcion,v.color,v.motor,v.cilindrada,v.fechaadq,v.estado,v.carnet,c.mma 
+                      from vehiculo v inner join furgoneta c 
+                      on c.matricula=v.matricula)
+            loop
+                insert into tmp_estructura (c1,c2,n1,c3,c4,c5,c6,n2,d1,c7,c8,n3) 
+                values(UPPER(tipoVehiculo),i.matricula,i.preciodia,i.marca,i.descripcion,i.color,i.motor,i.cilindrada,i.fechaadq,i.estado,i.carnet,i.mma);
+            end loop;
+            open vehiculos for select * from tmp_estructura;
+       elsif UPPER(tipoVehiculo)='MICROBUS' then
+             for i in (select v.matricula,v.preciodia,v.marca,v.descripcion,v.color,v.motor,v.cilindrada,v.fechaadq,v.estado,v.carnet,c.numplazas,c.medida 
+                      from vehiculo v inner join microbus c 
+                      on c.matricula=v.matricula)
+            loop
+                insert into tmp_estructura (c1,c2,n1,c3,c4,c5,c6,n2,d1,c7,c8,n3,n4) 
+                values(UPPER(tipoVehiculo),i.matricula,i.preciodia,i.marca,i.descripcion,i.color,i.motor,i.cilindrada,i.fechaadq,i.estado,i.carnet,i.numplazas,i.medida);
+            end loop;
+            open vehiculos for select * from tmp_estructura;
+        else
+            mostrar('el tipo de vehiculo no existe');
+        end if;
+        
+    end ListarVehiculo;
